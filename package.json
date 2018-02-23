@@ -1,6 +1,6 @@
 {
-  "name": "my-react-cli",
-  "version": "1.0.0",
+  "name": "my-react-cli-101",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,6 @@
    "bin": {
     "my-react-cli": "./index.js"
   },
-  "author": "",
+  "author": "det101",
   "license": "ISC"
 }
