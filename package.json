@@ -1,6 +1,6 @@
 {
-  "name": "dp-react-cli-101",
-  "version": "1.0.2",
+  "name": "dp-react-cli",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
