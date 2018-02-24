@@ -2,12 +2,13 @@
  * Created by luxiaolong on 2017/6/16.
  */
 
-var path = require('path');
-var webpack = require('webpack');
-var ZipPlugin = require('zip-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const ZipPlugin = require('zip-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-var CompressionWebpackPlugin = require('compression-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
 
 
 const vendorCofig = {
