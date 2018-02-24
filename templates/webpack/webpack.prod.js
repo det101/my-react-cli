@@ -6,13 +6,51 @@ var path = require('path');
 var webpack = require('webpack');
 var ZipPlugin = require('zip-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CompressionWebpackPlugin = require('compression-webpack-plugin');
-module.exports = {
-    entry: './src/index.js',
+
+
+const vendorCofig = {
+    name: "vendor",
+    // mode: "development || "production",
+    entry: { "vender": ["antd", "react", "react-dom", "dputils"] },
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "[name].[hash:8].js",
+        library: "vendor_[hash]"
+    },
+    plugins: [
+        new webpack.DllPlugin({
+            name: "vendor_[hash]",
+            path: path.resolve(__dirname, "dist/manifest.json")
+        }),
+        new UglifyJsPlugin(
+            {
+                uglifyOptions: {
+                    ie8: false,
+                    ecma: 8,
+                    output: {
+                        comments: false,
+                        beautify: false,
+                    },
+                    warnings: false
+                }
+            }
+        )
+    ]
+};
+
+const appConfig = {
+
+
+    entry: {
+        app: './src/index.js'
+    },
+    dependencies: ["vendor"],
     output: {
         path: path.resolve(__dirname, 'dist'),
         //libraryTarget: "umd"
-        filename: '[name].bundle.js',
+        filename: '[name].[hash:8].js',
         publicPath: '/',
         sourceMapFilename: '[name].map',
         library: 'Demo',
@@ -32,18 +70,23 @@ module.exports = {
                 ]
             }, {
                 test: /.less|css$/,
-                exclude: /node_modules/,
-                use: [{
-                    loader: 'style-loader' // creates style nodes from JS strings
-                }, {
-                    loader: 'css-loader' // translates CSS into CommonJS
-                }, {
-                    loader: 'less-loader',
-                    options: {
-                        strictMath: true,
-                        noIeCompat: true
-                    } // compiles Less to CSS
-                }]
+                // exclude: /node_modules/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: ["css-loader", "less-loader"]
+                  })
+                // use: [{
+                //     loader: 'style-loader' // creates style nodes from JS strings
+                // }, {
+                //     loader: 'css-loader' // translates CSS into CommonJS
+                // }, {
+                //     loader: 'less-loader',
+                //     options: {
+                //         strictMath: true,
+                //         noIeCompat: true
+                //     } // compiles Less to CSS
+                // }]
+                
             }, {
                 test: /\.(eot|svg|ttf|woff|jpe?g|png|gif)/i,
                 use: [
@@ -54,6 +97,12 @@ module.exports = {
     },
 
     plugins: [
+        new webpack.DllReferencePlugin({
+            manifest: path.resolve(__dirname, "dist/manifest.json")
+        }),
+        new ExtractTextPlugin({
+            filename: 'style.[hash:8].css'
+          }),
         new webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
@@ -61,15 +110,15 @@ module.exports = {
         new UglifyJsPlugin(
             {
                 uglifyOptions: {
-                  ie8: false,
-                  ecma: 8,
-                  output: {
-                    comments: false,
-                    beautify: false,
-                  },
-                  warnings: false
+                    ie8: false,
+                    ecma: 8,
+                    output: {
+                        comments: false,
+                        beautify: false,
+                    },
+                    warnings: false
                 }
-              }
+            }
         ),
         //new ZipPlugin({
         //    // OPTIONAL: defaults to the Webpack output path (above)
@@ -123,3 +172,5 @@ module.exports = {
     ]
 
 };
+
+module.exports = [vendorCofig, appConfig];
