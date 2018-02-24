@@ -14,7 +14,7 @@ module.exports = {
         filename: '[name].bundle.js',
         publicPath: '/',
         sourceMapFilename: '[name].map',
-        library: 'BindingUtils',
+        library: 'Demo',
         libraryTarget: "umd"
     },
 
@@ -109,13 +109,13 @@ module.exports = {
         //        forceZip64Format: false,
         //    },
         //}),
-        new CompressionWebpackPlugin({ //gzip 压缩
-            asset: '[path].gz[query]',
-            algorithm: 'gzip',
-            test: /\.(js|css)$/,    //压缩 js 与 css,
-            threshold: 10240,
-            minRatio: 0.8
-        }),
+        // new CompressionWebpackPlugin({ //gzip 压缩
+        //     asset: '[path].gz[query]',
+        //     algorithm: 'gzip',
+        //     test: /\.(js|css)$/,    //压缩 js 与 css,
+        //     threshold: 10240,
+        //     minRatio: 0.8
+        // }),
         new webpack.optimize.ModuleConcatenationPlugin()
     ]
 
