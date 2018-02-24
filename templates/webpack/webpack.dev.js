@@ -24,10 +24,11 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     'babel-loader'
-                    ,'eslint-loader'
+                    // ,'eslint-loader'
                 ]
             }, {
                 test: /.less|css$/,
+                exclude: /node_modules/,
                 use: [{
                     loader: 'style-loader' // creates style nodes from JS strings
                 }, {

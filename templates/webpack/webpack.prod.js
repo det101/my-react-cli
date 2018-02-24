@@ -5,6 +5,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var ZipPlugin = require('zip-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var CompressionWebpackPlugin = require('compression-webpack-plugin');
 module.exports = {
     entry: './src/index.js',
@@ -27,10 +28,11 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     'babel-loader'
-                    ,'eslint-loader'
+                    // ,'eslint-loader'
                 ]
             }, {
                 test: /.less|css$/,
+                exclude: /node_modules/,
                 use: [{
                     loader: 'style-loader' // creates style nodes from JS strings
                 }, {
@@ -56,18 +58,19 @@ module.exports = {
             minimize: true,
             debug: false
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            beautify: false,
-            mangle: {
-                screw_ie8: true,
-                keep_fnames: true
-            },
-            compress: {
-                screw_ie8: true,
-                //warnings: false
-            },
-            comments: false
-        }),
+        new UglifyJsPlugin(
+            {
+                uglifyOptions: {
+                  ie8: false,
+                  ecma: 8,
+                  output: {
+                    comments: false,
+                    beautify: false,
+                  },
+                  warnings: false
+                }
+              }
+        ),
         //new ZipPlugin({
         //    // OPTIONAL: defaults to the Webpack output path (above)
         //    // can be relative (to Webpack output path) or absolute
